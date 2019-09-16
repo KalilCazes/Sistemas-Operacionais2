@@ -73,7 +73,7 @@ void func_d(const char *full_path)
 
 void func_l(const char *full_path)
 {
-    stat(full_path, &path_stat);
+    lstat(full_path, &path_stat);
     if (S_ISLNK(path_stat.st_mode))
     {
         printf("%s\n", full_path);
