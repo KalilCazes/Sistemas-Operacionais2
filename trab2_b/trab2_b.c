@@ -148,7 +148,7 @@ int main(int argc, char *const argv[])
         break;
     }
 
-    printf("\nTotal INODES = %d\n", count);
+    printf("\nTotal = %d\n", count);
 
     return 0;
 }

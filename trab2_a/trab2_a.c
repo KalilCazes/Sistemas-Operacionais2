@@ -28,7 +28,7 @@ int main(void)
 
     int opened_file;
     opened_file = open("teste", O_RDWR);
-    //printf("File Opened = %d", opened_file);
+    printf("File Opened = %d", opened_file);
 
     for (nopen = fd = 0; fd < getdtablesize(); fd++)
     {
