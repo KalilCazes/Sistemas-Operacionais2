@@ -50,37 +50,67 @@ int walk_dir(const char *path, void (*func)(const char *))
     return (0);
 }
 
-void r(const char *full_path)
+void func_r(const char *full_path)
 {
-    printf("\n%s", full_path);
+    printf("\nr - %s", full_path);
+}
+
+void func_d(const char *full_path)
+{
+    printf("\nd - %s", full_path);
+}
+
+void func_l(const char *full_path)
+{
+    printf("\nl - %s", full_path);
+}
+
+void func_b(const char *full_path)
+{
+    printf("\nb - %s", full_path);
+}
+
+void func_c(const char *full_path)
+{
+    printf("\nc - %s", full_path);
 }
 
 int main(int argc, char *const argv[])
 {
     int opt;
 
+    const *path;
+    if (argc < 3)
+    {
+        path = ".";
+    }
+    else
+    {
+        path = argv[2];
+    }
+
     opt = getopt(argc, argv, "rdlbc");
 
     switch (opt)
     {
     case 'r':
-        printf("\nr");
+        func_r(path);
         break;
     case 'd':
-        printf("\nd");
+        func_d(path);
         break;
     case 'l':
-        printf("\nl");
+        func_l(path);
         break;
     case 'b':
-        printf("\nb");
+        func_b(path);
         break;
     case 'c':
-        printf("\nc");
+        func_c(path);
         break;
 
     default:
-        printf("\nr");
+        func_r(path);
         break;
     }
 
