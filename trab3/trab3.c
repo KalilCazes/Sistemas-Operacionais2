@@ -7,6 +7,8 @@
 
 struct stat path_stat;
 
+int count = 0;
+
 int walk_dir(const char *path, void (*func)(const char *))
 {
     DIR *dirp;
@@ -58,6 +60,7 @@ void func_r(const char *full_path)
     stat(full_path, &path_stat);
     if (S_ISREG(path_stat.st_mode))
     {
+        count++;
         printf("%s\n", full_path);
     }
 }
@@ -67,15 +70,17 @@ void func_d(const char *full_path)
     stat(full_path, &path_stat);
     if (S_ISDIR(path_stat.st_mode))
     {
+        count++;
         printf("%s\n", full_path);
     }
 }
 
 void func_l(const char *full_path)
 {
-    stat(full_path, &path_stat);
+    lstat(full_path, &path_stat);
     if (S_ISLNK(path_stat.st_mode))
     {
+        count++;
         printf("%s\n", full_path);
     }
 }
@@ -85,6 +90,7 @@ void func_b(const char *full_path)
     stat(full_path, &path_stat);
     if (S_ISBLK(path_stat.st_mode))
     {
+        count++;
         printf("%s\n", full_path);
     }
 }
@@ -94,6 +100,7 @@ void func_c(const char *full_path)
     stat(full_path, &path_stat);
     if (S_ISCHR(path_stat.st_mode))
     {
+        count++;
         printf("%s\n", full_path);
     }
 }
@@ -136,6 +143,8 @@ int main(int argc, char *const argv[])
         walk_dir(path, func_r);
         break;
     }
+
+    printf("\nTotal INODES = %d\n", count);
 
     return 0;
 }
