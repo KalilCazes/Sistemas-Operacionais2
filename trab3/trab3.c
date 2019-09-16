@@ -3,6 +3,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include <dirent.h>
+#include <sys/stat.h>
+
+struct stat path_stat;
 
 int walk_dir(const char *path, void (*func)(const char *))
 {
@@ -52,7 +55,11 @@ int walk_dir(const char *path, void (*func)(const char *))
 
 void func_r(const char *full_path)
 {
-    printf("\nr - %s", full_path);
+    stat(full_path, &path_stat);
+    if (S_ISREG(path_stat.st_mode))
+    {
+        printf("%s\n", full_path);
+    }
 }
 
 void func_d(const char *full_path)
@@ -94,26 +101,25 @@ int main(int argc, char *const argv[])
     switch (opt)
     {
     case 'r':
-        func_r(path);
+        walk_dir(path, func_r);
         break;
     case 'd':
         func_d(path);
         break;
     case 'l':
-        func_l(path);
+        walk_dir(path, func_l);
         break;
     case 'b':
-        func_b(path);
+        walk_dir(path, func_b);
         break;
     case 'c':
-        func_c(path);
+        walk_dir(path, func_c);
         break;
 
     default:
-        func_r(path);
+        walk_dir(path, func_r);
         break;
     }
 
-    //walk_dir("/home/flavio342/Desktop/ufrj/so2/trab3", test);
     return 0;
 }
