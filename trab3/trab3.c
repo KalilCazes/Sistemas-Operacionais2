@@ -64,22 +64,38 @@ void func_r(const char *full_path)
 
 void func_d(const char *full_path)
 {
-    printf("\nd - %s", full_path);
+    stat(full_path, &path_stat);
+    if (S_ISDIR(path_stat.st_mode))
+    {
+        printf("%s\n", full_path);
+    }
 }
 
 void func_l(const char *full_path)
 {
-    printf("\nl - %s", full_path);
+    stat(full_path, &path_stat);
+    if (S_ISLNK(path_stat.st_mode))
+    {
+        printf("%s\n", full_path);
+    }
 }
 
 void func_b(const char *full_path)
 {
-    printf("\nb - %s", full_path);
+    stat(full_path, &path_stat);
+    if (S_ISBLK(path_stat.st_mode))
+    {
+        printf("%s\n", full_path);
+    }
 }
 
 void func_c(const char *full_path)
 {
-    printf("\nc - %s", full_path);
+    stat(full_path, &path_stat);
+    if (S_ISCHR(path_stat.st_mode))
+    {
+        printf("%s\n", full_path);
+    }
 }
 
 int main(int argc, char *const argv[])
@@ -104,7 +120,7 @@ int main(int argc, char *const argv[])
         walk_dir(path, func_r);
         break;
     case 'd':
-        func_d(path);
+        walk_dir(path, func_d);
         break;
     case 'l':
         walk_dir(path, func_l);
