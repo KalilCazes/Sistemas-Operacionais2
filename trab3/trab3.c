@@ -70,8 +70,12 @@ void func_d(const char *full_path)
     stat(full_path, &path_stat);
     if (S_ISDIR(path_stat.st_mode))
     {
-        count++;
-        printf("%s\n", full_path);
+        lstat(full_path, &path_stat);
+        if (!S_ISLNK(path_stat.st_mode))
+        {
+            count++;
+            printf("%s\n", full_path);
+        }
     }
 }
 
