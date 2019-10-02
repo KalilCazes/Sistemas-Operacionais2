@@ -2,9 +2,21 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <string.h>
+#include <signal.h>
+
+void signal_handler(int sig)
+{
+    FILE *log_file = fopen("log.txt", "a");
+    fprintf(log_file, "\nFIM DOS LOGS");
+    fprintf(log_file, "%s", "\n====================================");
+    fclose(log_file);
+    exit(0);
+}
 
 int main(int argc, char *const argv[])
 {
+
+    (void)signal(SIGTERM, signal_handler);
 
     int n = atol(argv[1]);
 
@@ -12,7 +24,7 @@ int main(int argc, char *const argv[])
 
     log_file = fopen("log.txt", "w");
 
-    fprintf(log_file, "%s", "\nPID\t\tPPID\t\tNome do Programa");
+    fprintf(log_file, "%s", "\nPID\t\t\tPPID\t\t\tNome do Programa");
     fprintf(log_file, "%s", "\n====================================");
 
     fclose(log_file);
@@ -21,36 +33,48 @@ int main(int argc, char *const argv[])
     {
         sleep(n);
 
-        printf("\n\nJust Do It!\n");
-
         log_file = fopen("log.txt", "a");
 
-        FILE *command_file;
-        char buffer[1035];
-        command_file = popen("/bin/ps aux | awk '{ print $8 \" \" $2 }' | grep -w Z", "r");
-        while (fgets(buffer, 100, command_file) != NULL)
+        FILE *get_zombie;
+        char zombie_buffer[1000];
+        get_zombie = popen("/bin/ps aux | awk '{ print $8 \" \" $2 }' | grep -w Z", "r");
+        while (fgets(zombie_buffer, 100, get_zombie) != NULL)
         {
-            char *ptr = strtok(buffer, " ");
-            ptr = strtok(NULL, " ");
-            ptr = strtok(ptr, "\n");
+            char *zombie_pid = strtok(zombie_buffer, " ");
+            zombie_pid = strtok(NULL, " ");
+            zombie_pid = strtok(zombie_pid, "\n");
 
-            FILE *second_command_file;
-            char second_buffer[1035];
+            FILE *get_zombie_parent;
+            char parent_pid_buffer[1035];
 
-            char command_str[80];
-            strcpy(command_str, "/bin/ps -o ppid= -p ");
-            strcat(command_str, ptr);
+            char parent_pid_command[80];
+            strcpy(parent_pid_command, "/bin/ps -o ppid= -p ");
+            strcat(parent_pid_command, zombie_pid);
 
-            second_command_file = popen(command_str, "r");
-            while (fgets(second_buffer, 100, second_command_file) != NULL)
+            get_zombie_parent = popen(parent_pid_command, "r");
+            while (fgets(parent_pid_buffer, 100, get_zombie_parent) != NULL)
             {
-                char *second_ptr = strtok(second_buffer, "\n");
-                fprintf(log_file, "\n%s\t\t%s\t\t\tVem Nimim", ptr, second_ptr);
-                printf("Filho: %s, Pai: %s", ptr, second_buffer);
+                char *parent_pid = strtok(parent_pid_buffer, "\n");
+
+                FILE *get_zombie_parent_name;
+                char parent_name_buffer[1035];
+
+                char parent_name_command[80];
+                strcpy(parent_name_command, "ps -p ");
+                strcat(parent_name_command, parent_pid);
+                strcat(parent_name_command, " -o comm=");
+
+                get_zombie_parent_name = popen(parent_name_command, "r");
+                while (fgets(parent_name_buffer, 100, get_zombie_parent_name) != NULL)
+                {
+                    char *parent_name = strtok(parent_name_buffer, "\n");
+                    fprintf(log_file, "\n%s\t\t%s\t\t\t%s", zombie_pid, parent_pid, parent_name);
+                }
+                pclose(get_zombie_parent_name);
             }
-            pclose(second_command_file);
+            pclose(get_zombie_parent);
         }
-        pclose(command_file);
+        pclose(get_zombie);
 
         fprintf(log_file, "%s", "\n====================================");
         fclose(log_file);
