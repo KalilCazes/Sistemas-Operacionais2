@@ -57,7 +57,7 @@ int main(int argc, char *const argv[])
                 char *parent_pid = strtok(parent_pid_buffer, "\n");
 
                 FILE *get_zombie_parent_name;
-                char parent_name_buffer[1035];
+                char parent_name_buffer[1024];
 
                 char parent_name_command[80];
                 strcpy(parent_name_command, "ps -p ");
