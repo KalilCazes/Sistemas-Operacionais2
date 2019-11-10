@@ -1,41 +1,16 @@
-echo -e "\nDigite o primeiro número:\n"
+re='^[+-]?[0-9]+([.][0-9]+)?$'
+if ! [[ $1 =~ $re &&  $2 =~ $re ]] ; then
+    echo -e "\nEsse script deve receber dois números como parâmetro.\n"; exit 1
+fi
 
-resposta_aceita=0
-while [ "$resposta_aceita" -ne 1 ]; do
-
-    read num_1
-
-    re='^[+-]?[0-9]+([.][0-9]+)?$'
-    if ! [[ $num_1 =~ $re ]] ; then
-        echo -e "\nNúmero inválido. Digite novamente:\n"
-    else
-        resposta_aceita=1
-    fi
-done
-
-echo -e "\nDigite o segundo número:\n"
-
-resposta_aceita=0
-while [ "$resposta_aceita" -ne 1 ]; do
-
-    read num_2
-
-    re='^[+-]?[0-9]+([.][0-9]+)?$'
-    if ! [[ $num_2 =~ $re ]] ; then
-        echo -e "\nNúmero inválido. Digite novamente:\n"
-    else
-        resposta_aceita=1
-    fi
-done
-
-if [ "$num_1" -gt "$num_2" ]
+if [ "$1" -gt "$2" ]
 then
-    echo -e "\n$num_1 é maior que $num_2"
+    echo -e "\n$1 é maior que $2"
 else
-    if [ "$num_1" -lt "$num_2" ]
+    if [ "$1" -lt "$2" ]
     then
-        echo -e "\n$num_1 é menor que $num_2"
+        echo -e "\n$1 é menor que $2"
     else
-        echo -e "\n$num_1 é igual a $num_2"
+        echo -e "\n$1 é igual a $2"
     fi
 fi
