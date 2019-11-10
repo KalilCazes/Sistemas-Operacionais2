@@ -10,8 +10,8 @@ if [ -e ${NOME} ]; then
 	elif [ -f ${NOME} ]; then
 		echo -e "${NOME} e um arquivo regular.\n"
 	fi
-	else
-		echo "O arquivo nao existe."
+else
+	echo "O arquivo nao existe."
 fi 	
 
 
