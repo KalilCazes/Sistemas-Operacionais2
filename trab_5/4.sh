@@ -1,3 +1,5 @@
+#!/bin/bash
+
 re='^[+-]?[0-9]+([.][0-9]+)?$'
 if ! [[ $1 =~ $re ]] ; then
     echo -e "\nEsse script deve receber um número como parâmetro.\n"; exit 1
