@@ -6,6 +6,7 @@ candle="█"
 
 red='\033[0;31m'
 green='\033[0;32m'
+yellow='\033[1;33m'
 no_color='\033[0m'
 
 end_loop=0
@@ -18,7 +19,7 @@ while [ "$end_loop" -ne 1 ]; do
     low=()
 
     i=0
-    raw=$(cat data.txt)
+    raw=$(cat data)
     export IFS=","
     for r in $raw; do
 
@@ -103,6 +104,10 @@ while [ "$end_loop" -ne 1 ]; do
                     h_candle=$c
                     l_candle=$o
                     color=$green
+                elif (( c == o )); then
+                    h_candle=$c
+                    l_candle=$o
+                    color=$yellow
                 else
                     h_candle=$o
                     l_candle=$c
@@ -123,28 +128,30 @@ while [ "$end_loop" -ne 1 ]; do
     done
 
     text=""
-    for (( i=plot_size_y-1; i>=-date_size; i-- )); do
-        for (( j=0; j<screen_w; j++ )); do
-            if (( j>plot_size_x-1 )); then
-                if (( i > 0 )); then
-                    text="${text}${prices[$i]:$j-($plot_size_x):1}"
-                fi
-            elif (( j==plot_size_x-1 )); then
-                if (( i > 0 )); then
-                    text="${text} ${no_color}$stick   "
-                fi
-            elif (( i<0 )); then
-                if [ -z ${dates[$j]:$((-i-1)):1} ]; then
-                    text="${text} ${no_color} "
+    if (( ${#close[@]} > 0 ));then
+        for (( i=plot_size_y-1; i>=-date_size; i-- )); do
+            for (( j=0; j<screen_w; j++ )); do
+                if (( j>plot_size_x-1 )); then
+                    if (( i > 0 )); then
+                        text="${text}${prices[$i]:$j-($plot_size_x):1}"
+                    fi
+                elif (( j==plot_size_x-1 )); then
+                    if (( i > 0 )); then
+                        text="${text} ${no_color}$stick   "
+                    fi
+                elif (( i<0 )); then
+                    if [ -z ${dates[$j]:$((-i-1)):1} ]; then
+                        text="${text} ${no_color} "
+                    else
+                        text="${text} ${no_color}${dates[$j]:$((-i-1)):1}"
+                    fi
                 else
-                    text="${text} ${no_color}${dates[$j]:$((-i-1)):1}"
+                    text="${text} ${screen[$i,$j]}"
                 fi
-            else
-                text="${text} ${screen[$i,$j]}"
-            fi
+            done
+            text="${text} \n"
         done
-        text="${text} \n"
-    done
+    fi
 
     tput cup 0 0
     echo -ne "$text"
