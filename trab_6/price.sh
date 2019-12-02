@@ -3,7 +3,9 @@
 function set_stock() {
     declare -A choices
     re='^[0-9]?$'
-    choices=(["petrobras_PETR4"]="petrobras-pn-PETR4" ["magazine_luiza_MGLU3"]="magaz-luiza-on-MGLU3" ["weg_WEGE3"]="weg-on-WEGE3")
+    choices=(["petrobras_PETR4"]="petrobras-pn-PETR4" ["magazine_luiza_MGLU3"]="magaz-luiza-on-MGLU3" 
+    ["weg_WEGE3"]="weg-on-WEGE3" ["itau_ITUB4"]="itauunibanco-pn-ITUB4" ["vale_VALE3"]="vale-on-VALE3"
+    ["ambev_ABEV3"]="ambev-s-a-on-ABEV3" ["bradesco_BBDC4"]="bradesco-pn-BBDC4" ["renner_LREN3"]="lojas-renner-on-LREN3")
     i=1
 
     echo "Choose stock:"
