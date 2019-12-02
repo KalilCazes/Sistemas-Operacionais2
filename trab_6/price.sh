@@ -33,6 +33,7 @@ function set_stock() {
 }
 
 cleanup() {
+    tput cnorm
     pkill -P $$
     exit 0
 }
