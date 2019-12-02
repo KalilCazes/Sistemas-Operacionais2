@@ -1,5 +1,5 @@
 #!/bin/bash
-set -x
+#set -x
 > "${1}"
 
 while true; do

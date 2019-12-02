@@ -154,6 +154,8 @@ while [ "$end_loop" -ne 1 ]; do
             done
             text="${text} \n"
         done
+    else
+        text=$(cat wait_art)
     fi
 
     tput cup 0 0
