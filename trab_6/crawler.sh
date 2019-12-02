@@ -1,7 +1,6 @@
 #!/bin/bash
-#set -x
 
-> data
+> "${1}"
 
 while true; do
 
@@ -31,7 +30,7 @@ while true; do
     first_price=${prices[0]}
     last_price=${prices[-1]}
 
-    echo -n "${current_time},${first_price},${max_price},${min_price},${last_price}," >> data
+    echo -n "${current_time},${first_price},${max_price},${min_price},${last_price}," >> "$1"
 
 
 done

@@ -1,7 +1,8 @@
+#!/bin/bash
+
 tput reset
 
 stick="│"
-h_stick="_"
 candle="█"
 
 red='\033[0;31m'
@@ -19,7 +20,7 @@ while [ "$end_loop" -ne 1 ]; do
     low=()
 
     i=0
-    raw=$(cat data)
+    raw=$(cat "${1}")
     export IFS=","
     for r in $raw; do
 
@@ -73,8 +74,8 @@ while [ "$end_loop" -ne 1 ]; do
 
     date_size=5
 
-    plot_size_x=screen_w-prices_size
-    plot_size_y=screen_h-date_size
+    plot_size_x=$((screen_w-prices_size))
+    plot_size_y=$((screen_h-date_size))
 
     candle_size=$(( (max_value-min_value)/(plot_size_y) ))
 
@@ -140,7 +141,7 @@ while [ "$end_loop" -ne 1 ]; do
                         text="${text} ${no_color}$stick   "
                     fi
                 elif (( i<0 )); then
-                    if [ -z ${dates[$j]:$((-i-1)):1} ]; then
+                    if [ -z "${dates[$j]:$((-i-1)):1}" ]; then
                         text="${text} ${no_color} "
                     else
                         text="${text} ${no_color}${dates[$j]:$((-i-1)):1}"
