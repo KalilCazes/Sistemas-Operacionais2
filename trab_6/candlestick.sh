@@ -11,8 +11,8 @@ green='\033[0;32m'
 yellow='\033[1;33m'
 no_color='\033[0m'
 
-end_loop=0
-while [ "$end_loop" -ne 1 ]; do
+
+while true; do
 
     date=()
     close=()
