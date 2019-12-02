@@ -66,6 +66,8 @@ while [ "$end_loop" -ne 1 ]; do
     for (( i=0; i<screen_h-date_size; i++ )); do
         if (( i%2==0 )); then
             prices[$i]=$(( min_value + i*candle_size ))
+            temp_size=${#prices[$i]}
+            prices[$i]="R$ ${prices[$i]:0:$((temp_size-2))},${prices[$i]:$((temp_size-2)):2}"
             prices_size=${#prices[$i]}
         else
             prices[$i]=""
