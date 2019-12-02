@@ -1,6 +1,5 @@
 #!/bin/bash
 
-
 function set_stock() {
     declare -A choices
     re='^[0-9]?$'
