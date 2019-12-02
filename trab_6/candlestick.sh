@@ -1,6 +1,7 @@
 #!/bin/bash
 
 tput reset
+tput civis
 
 stick="│"
 candle="█"
