@@ -138,7 +138,8 @@ while [ "$end_loop" -ne 1 ]; do
 
     text=""
     if (( ${#close[@]} > 0 ));then
-        for (( i=plot_size_y-1; i>=-date_size; i-- )); do
+        text="${1} \n"
+        for (( i=plot_size_y-2; i>=-date_size; i-- )); do
             for (( j=0; j<screen_w; j++ )); do
                 if (( j>plot_size_x-1 )); then
                     if (( i > 0 )); then
