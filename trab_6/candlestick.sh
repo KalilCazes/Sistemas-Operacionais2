@@ -28,13 +28,13 @@ while [ "$end_loop" -ne 1 ]; do
         if ((i==0)); then
             date+=("$r")
         elif ((i==1)); then
-            open+=("$r")
+            open+=($((r*10)))
         elif ((i==2)); then
-            high+=("$r")
+            high+=($((r*10)))
         elif ((i==3)); then
-            low+=("$r")
+            low+=($((r*10)))
         elif (( i==4 )); then
-            close+=("$r")
+            close+=($((r*10)))
         fi
         i=$(((i+1)%5))
     done
@@ -59,8 +59,18 @@ while [ "$end_loop" -ne 1 ]; do
 
     done
 
-    min_value=$(( min_value - 100 ))
-    max_value=$(( max_value + 100 ))
+    min_value=$(( min_value - (max_value-min_value)*40/100 ))
+    max_value=$(( max_value + (max_value-min_value)*40/100 ))
+
+    date_size=5
+
+    plot_size_y=$((screen_h-date_size))
+
+    candle_size=$(( (max_value-min_value)/(plot_size_y) ))
+
+    if ((candle_size <= 0)); then
+        candle_size=1
+    fi
 
     prices=()
     prices_size=0
@@ -68,20 +78,15 @@ while [ "$end_loop" -ne 1 ]; do
         if (( i%2==0 )); then
             prices[$i]=$(( min_value + i*candle_size ))
             temp_size=${#prices[$i]}
-            prices[$i]="R$ ${prices[$i]:0:$((temp_size-2))},${prices[$i]:$((temp_size-2)):2}"
+            prices[$i]="R$ ${prices[$i]:0:$((temp_size-3))},${prices[$i]:$((temp_size-3)):2}"
             prices_size=${#prices[$i]}
         else
             prices[$i]=""
         fi
     done
 
-    date_size=5
-
     plot_size_x=$((screen_w-prices_size))
-    plot_size_y=$((screen_h-date_size))
-
-    candle_size=$(( (max_value-min_value)/(plot_size_y) ))
-
+    
     declare -A screen
 
     for (( i=0; i<plot_size_y; i++ )); do
