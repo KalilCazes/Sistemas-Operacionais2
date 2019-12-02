@@ -1,5 +1,5 @@
 #!/bin/bash
-
+set -x
 > "${1}"
 
 while true; do
@@ -13,7 +13,7 @@ while true; do
     i=0
     while [[ "${current_time}" == "$(date +%H:%M)" ]]; do
 
-        prices+=($( curl -Ss  https://br.advfn.com/bolsa-de-valores/bmf/WINZ19/cotacao | grep quoteElementPiece19 | awk '{print $NF}' | sed 's/[Aa-zZ>"=&;.,</]//g' | sed 's/.\{2\}$//' )) 
+        prices+=($( curl -Ss  https://br.advfn.com/bolsa-de-valores/bovespa/"${2}"/cotacao | grep quoteElementPiece23 | awk '{print $NF}' | sed 's/[Aa-zZ>"=$R&;.,</]//g'))
         
 
         if (( max_price < prices[i] )); then
