@@ -1,9 +1,10 @@
 #!/bin/bash
-#set -x
-function menu() {
+
+
+function set_stock() {
     declare -A choices
     re='^[0-9]?$'
-    choices=(["petrobras_PETR4"]="petrobras-pn-PETR4" ["magazine_luiza_MGLU3"]="magaz-luiza-on-MGLU3")
+    choices=(["petrobras_PETR4"]="petrobras-pn-PETR4" ["magazine_luiza_MGLU3"]="magaz-luiza-on-MGLU3" ["weg_WEGE3"]="weg-on-WEGE3")
     i=1
 
     echo "Choose stock:"
@@ -37,18 +38,13 @@ cleanup() {
 }
 trap cleanup SIGHUP SIGINT SIGTERM
 
-echo "Type file name to plot old data or press [RETURN] to collect new data:"
+if [[ "${1}" = "" ]]; then
+    set_stock
 
-read -r INPUT
-if [[ "${INPUT}" = "" ]]; then 
-    menu
-
-elif [[ -f "${INPUT}" && "${INPUT: -3}" == ".fk" ]]; then 
-    file_name="${INPUT}"
+elif [[ -f "${1}" && "${1: -3}" == ".fk" ]]; then
+    file_name="${1}"
     ./candlestick.sh "${file_name}"
 else
     echo "File not found or not compatible."
     exit 1
 fi
-
-
