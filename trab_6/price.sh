@@ -1,6 +1,5 @@
 #!/bin/bash
 
-
 function set_stock() {
     declare -A choices
     re='^[0-9]?$'
@@ -33,6 +32,7 @@ function set_stock() {
 }
 
 cleanup() {
+    tput cnorm
     pkill -P $$
     exit 0
 }
